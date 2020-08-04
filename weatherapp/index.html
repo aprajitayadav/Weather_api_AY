@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Weather App</title>
+    <link rel="stylesheet" th:href="@{/main.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="body">
+    <div class="form-container">
+        <!-- form to submit zipcode -->
+        <div class="col-md-6 offset-md-3">
+            <h3 class="text-center">Get Your Local Weather Report</h3>
+            <form th:action="@{/}" th:object="${request}" method="post" autocomplete="off" >
+                <div class="form-group">
+                        <input type="text" th:field="*{zipCode}" placeholder="Zip Code" class="form-control form-control-sm"/>
+                </div>
+                <div class="form-group">
+                        <button class="btn btn-sm btn-success btn-block" name="Submit" value="Submit" type="Submit">SUBMIT</button>
+                </div>
+            </form>
+            <!-- view -->
+            <hr>
+            <span th:if="${data != null && data.name == 'error'}">Invalid zipcode, data not found</span>
+            <div th:if="${data != null && data.name != 'error'}">
+            <h3>Forecast for <span th:text="${data.name}"></span></h3>
+                <p><b>Temperature:</b> <span th:text="${data.main.get('temp')}"></span> °F</p>
+                <p><b>Cloud Cover:</b> <span th:text="${data.clouds.get('all')}"></span> %</p>
+                <p><b>Wind:</b> <span th:text="${data.wind.get('speed')}"></span> mph</p>
+                <p><b>Conditions:</b> <span th:text="${data.weather[0].get('description')}"></span>
+                        <img th:src="@{${'http://openweathermap.org/img/w/' 
+                    + data.weather[0].get('icon') + '.png'}}"></p>
+            </div>
+            <hr>
+            <h3>Recent Searches</h3></th>
+                <span th:each="zipCode: ${zip_codes}" th:if="${zipCodeStat.index >= zipCodeStat.size-5}">
+                <p th:text="${zipCode.zip}"></p>
+                </span>
+                </div>
+        </div> <!--- end of col --->
+    </div> <!--- end of container --->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // var busLocations = /*[[${buses}]]*/ null;
+       
+
+
+
+
+            var weathercase;            
+
+              
+            var weathermain = /*[[${data.weather[0].main}]]*/ null;      
+
+            alert(weathermain);
+            if(weathermain.toLowerCase().includes("clouds")){
+                weathercase = 0;
+            }else if(weathermain.toLowerCase().includes("rain")){
+                weathercase = 1;
+            }else if(weathermain.toLowerCase().includes("snow")){
+                weathercase = 2;
+            }else if(weathermain.toLowerCase().includes("clear")) {
+                weathercase = 3;
+            }      
+             
+                    
+           alert(weathercase);
+           // let weather = weathermain.includes("Cloudes");
+            // let weather = 'clouds';
+            //console.log(weathermain);
+            //console.log(weather);
+            
+            switch (weathercase) {
+            case 0:
+            let cloudyBackground = document.querySelector('body');
+                cloudyBackground.style.backgroundImage = "url('http://3.bp.blogspot.com/-eaiIXky-i70/UDk4XDbi5YI/AAAAAAAAFqs/zgls27Juxrw/s1600/08+clouds.JPG')";
+                break;
+            case 1:
+            let rainyBackground = document.querySelector('body');
+                rainyBackground.style.backgroundImage = "url('https://www.inform.kz/fotoarticles/20190522002811.jpg')";
+            break;
+            // case 2:
+            // snowyBackground;
+            // break;
+            case 3:
+            let sunnyBackground = document.querySelector('body');
+                sunnyBackground.style.backgroundImage = "url('https://tse4.mm.bing.net/th?id=OIP.2H4dqmX_BiC13B48Iubu7QHaEK&pid=Api&P=0&w=274&h=155')";
+            break;
+        }
+
+         /*]]>*/
+      </script>  
+</body>
+</html>
