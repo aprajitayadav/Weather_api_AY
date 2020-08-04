@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Weather App</title>
+    <link rel="stylesheet" th:href="@{/main.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="body">
+    <div class="form-container">
+        <!-- form to submit zipcode -->
+        <div class="col-md-6 offset-md-3">
+            <h3 class="text-center">Get Your Local Weather Report</h3>
+            <form th:action="@{/}" th:object="${request}" method="post" autocomplete="off" >
+                <div class="form-group">
+                        <input type="text" th:field="*{zipCode}" placeholder="Zip Code" class="form-control form-control-sm"/>
+                </div>
+                <div class="form-group">
+                        <button class="btn btn-sm btn-success btn-block" name="Submit" value="Submit" type="Submit">SUBMIT</button>
+                </div>
+            </form>
+            <!-- view -->
+            <hr>
+            <span th:if="${data != null && data.name == 'error'}">Invalid zipcode, data not found</span>
+            <div th:if="${data != null && data.name != 'error'}">
+            <h3>Forecast for <span th:text="${data.name}"></span></h3>
+                <p><b>Temperature:</b> <span th:text="${data.main.get('temp')}"></span> °F</p>
+                <p><b>Cloud Cover:</b> <span th:text="${data.clouds.get('all')}"></span> %</p>
+                <p><b>Wind:</b> <span th:text="${data.wind.get('speed')}"></span> mph</p>
+                <p><b>Conditions:</b> <span th:text="${data.weather[0].get('description')}"></span>
+                        <img th:src="@{${'http://openweathermap.org/img/w/' 
+                    + data.weather[0].get('icon') + '.png'}}"></p>
+            </div>
+            <hr>
+            <h3>Recent Searches</h3></th>
+                <span th:each="zipCode: ${zip_codes}" th:if="${zipCodeStat.index >= zipCodeStat.size-5}">
+                <p th:text="${zipCode.zip}"></p>
+                </span>
+                </div>
+        </div> <!--- end of col --->
+    </div> <!--- end of container --->
+</body>
+</html>

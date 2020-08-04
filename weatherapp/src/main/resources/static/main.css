@@ -1,0 +1,23 @@
+* {
+  color: white;
+  font-family: "Montserrat", sans-serif;
+}
+
+body {
+  background-image: url("https://i.ytimg.com/vi/2Jm7FRRIspo/maxresdefault.jpg");
+}
+
+.form-container {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 700px;
+  margin-top: 1%;
+  margin-left: 25%;
+}
+
+.footer {
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.8));
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 1% 1%;
+}
